@@ -2,21 +2,17 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class Comment extends Model
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password'
+        'id', 'body', 'user_id', 'order_id'
     ];
 
     /**
@@ -24,7 +20,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $dates = ['email_verified_at', 'created_at', 'updated_at'];
+    protected $dates = ['created_at', 'updated_at'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -32,7 +28,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token'
+        //
     ];
 
     /**
@@ -41,15 +37,24 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime'
+        //
     ];
 
     /**
-     * Get the Comments for the User.
+     * Get the Order for the Comment.
      */
-    public function comments()
+    public function order()
     {
-        return $this->hasMany(\App\Comment::class);
+        return $this->belongsTo(\App\Order::class);
+    }
+
+
+    /**
+     * Get the User for the Comment.
+     */
+    public function user()
+    {
+        return $this->belongsTo(\App\User::class);
     }
 
 }
